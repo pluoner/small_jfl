@@ -1,4 +1,4 @@
-package small_jfl.Game_of_nim;
+package Game_of_nim;
 import java.util.*;
 
 class Nim {

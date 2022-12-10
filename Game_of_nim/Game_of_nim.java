@@ -6,7 +6,7 @@ For example, if the initial heap sizes are 3, 4, and 5, a game could be played l
 - P1 takes 3 items from A. - P2 takes 1 items from C -> Player one wins
 Given a list of non-zero starting values [a, b, c], and assuming optimal play, determine whether the first player has a forced win. */
 
-package small_jfl.Game_of_nim;
+package Game_of_nim;
 import java.util.Arrays;
 public class Game_of_nim {
     public static void main(String[] args) {
