@@ -2,6 +2,7 @@ package AdventOfCode2022.Common;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -20,5 +21,18 @@ public class Helpers {
             e.printStackTrace();
         }
         return ilist;
+    }
+
+    public static void exp(String filepath, ArrayList<String> data) {
+        try {
+            FileWriter fw = new FileWriter(filepath);
+            for (String r : data) {
+                fw.write(r + "\n");
+            }
+            fw.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 }
