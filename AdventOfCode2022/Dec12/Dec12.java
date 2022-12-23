@@ -10,8 +10,11 @@ public class Dec12 {
     public static void main(String[] args) {
         ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec12/res/input.txt");
         Hill elfHill = new Hill(input);
-        elfHill.climbHill();
-        System.out.println("minSteps: " + Hill.minSteps);
+//        elfHill.climbHill();
+//        System.out.println("minSteps: " + Hill.minSteps);
+        Integer fewestForChar = elfHill.climbHill(elfHill.startpos('a'));
+        System.out.println("minSteps: " + fewestForChar);
+
     }
 }
 
@@ -22,6 +25,42 @@ class Hill {
     private static HashMap<Integer, HashMap<Integer, Integer>> visitedInXSteps;
     private static Pos start, stop;
     static Integer minSteps = -1;
+
+    ArrayList<Pos> startpos(int c) {
+        int c2 = c;
+        c2++;
+        ArrayList<Pos> spos = new ArrayList<Pos>();
+
+        for (int i = 0; i < mapRows; i++) {
+            for (int j = 0; j < mapCols; j++) {
+                if (map.get(i).get(j).equals(c)) {
+                    if ((i > 0 && map.get(i-1).get(j).equals(c2))
+                       || (i < mapRows-1 && map.get(i+1).get(j).equals(c2))
+                       || (j > 0 && map.get(i).get(j-1).equals(c2))
+                       || (j < mapCols-1 && map.get(i).get(j+1).equals(c2)))
+                    {
+                        Pos sp = new Pos(i, j);
+                            spos.add(sp);
+                    }
+                }
+            }
+        }
+        return spos;
+    }
+    Integer climbHill(ArrayList<Pos> from) {
+        Integer minStepsFrom = -1;
+
+        for (Pos sp : from) {
+            minSteps = -1;
+            start = sp;
+            climbHill();
+            if (minStepsFrom == -1 || minStepsFrom > minSteps) {
+                minStepsFrom = minSteps;
+            }
+        }
+
+        return minStepsFrom;
+    }
     
     void climbHill() {
         visitedInXSteps = new HashMap<Integer, HashMap<Integer, Integer>>();
