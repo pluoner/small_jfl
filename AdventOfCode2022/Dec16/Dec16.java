@@ -61,6 +61,7 @@ class Volcano {
             }
             if (!open && e.getValue() <= remTime) {
                 done = false;
+                @SuppressWarnings("unchecked")
                 ArrayList<String> nextOpened = (ArrayList<String>)opened.clone();
                 nextOpened.add(e.getKey());
                 if (!eUsed && opened.size()>0 && opened.size() <= (reducedMap.size() / 2)) {
@@ -94,6 +95,7 @@ class Volcano {
             }
             if (!open && e.getValue() <= remTime) {
                 done = false;
+                @SuppressWarnings("unchecked")
                 ArrayList<String> nextOpened = (ArrayList<String>)opened.clone();
                 nextOpened.add(e.getKey());
                 openNext(getValveByID(e.getKey()), remTime-e.getValue(), accPreasure+(getValveByID(e.getKey()).flowRate*(remTime-e.getValue())), nextOpened);
