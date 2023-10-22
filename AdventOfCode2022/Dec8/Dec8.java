@@ -8,7 +8,7 @@ public class Dec8 {
     public static ArrayList<ArrayList<Integer>> forest;
     
     public static void main(String[] args) {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec8/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec8/res/input.txt");
         ArrayList<ArrayList<Integer>> forest = new ArrayList<ArrayList<Integer>>();
 
         for (String ir : input) {

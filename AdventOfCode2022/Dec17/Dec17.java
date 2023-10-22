@@ -8,7 +8,7 @@ import java.util.HashSet;
 public class Dec17 {
 
     public static void main(String[] args) throws CloneNotSupportedException {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec17/res/inptest.txt");
+        ArrayList<String> input = Helpers.imp("Dec17/res/inptest.txt");
 
         Cave crumblingCave = new Cave(input.get(0));
         Cave.setWalls(0, 7);

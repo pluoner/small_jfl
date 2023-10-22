@@ -8,7 +8,7 @@ import java.util.HashSet;
 public class Dec18 {
 
     public static void main(String[] args) throws CloneNotSupportedException {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec18/res/inptestcopy.txt");
+        ArrayList<String> input = Helpers.imp("Dec18/res/inptestcopy.txt");
         Grid3D grid3d = new Grid3D();
         grid3d.parseStrArr(input);
         System.out.println("No. exposed sides: " + grid3d.exposedSides);;

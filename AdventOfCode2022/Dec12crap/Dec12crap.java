@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Dec12crap {
     
     public static void main(String[] args) {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec12/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec12/res/input.txt");
         Hill.init(input);
 
         Hill elfHill = new Hill();

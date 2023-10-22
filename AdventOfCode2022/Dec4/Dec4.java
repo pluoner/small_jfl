@@ -6,7 +6,7 @@ import AdventOfCode2022.Common.Helpers;
 public class Dec4 {
 
     public static void main(String[] args) {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec4/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec4/res/input.txt");
         ArrayList<Pairs> pairs = new ArrayList<Pairs>();
 
         for (String s : input) {

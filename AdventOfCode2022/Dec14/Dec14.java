@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Dec14 {
 
     public static void main(String[] args) throws CloneNotSupportedException {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec14/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec14/res/input.txt");
 
         Cave elfCaveWithAbyss = new Cave();
         elfCaveWithAbyss.parseInput(input);

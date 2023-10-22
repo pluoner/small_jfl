@@ -9,7 +9,7 @@ import java.util.Map;
 public class Dec16 {
 
     public static void main(String[] args) throws CloneNotSupportedException {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec16/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec16/res/input.txt");
         Volcano volcano = new Volcano(input);
         volcano.openValvesOpt(30);
         Integer maxOutput = 0;

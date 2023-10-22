@@ -7,7 +7,7 @@ import AdventOfCode2022.Common.Helpers;
 public class Dec7 {
     
     public static void main(String[] args) {
-        ArrayList<String> in = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec7/res/input.txt");
+        ArrayList<String> in = Helpers.imp("Dec7/res/input.txt");
         Dir root = new Dir(null, "/");
         Dir cd = null;
 

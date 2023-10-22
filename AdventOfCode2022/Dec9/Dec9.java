@@ -8,7 +8,7 @@ import AdventOfCode2022.Common.Helpers;
 public class Dec9 {
     
     public static void main(String[] args) {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec9/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec9/res/input.txt");
         ArrayList<MoveInst> moveInst = new ArrayList<MoveInst>();
         for (String ir : input) {
             MoveInst mi = new MoveInst(ir.substring(0,1), Integer.parseInt(ir.substring(2,ir.length())));

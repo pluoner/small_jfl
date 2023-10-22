@@ -7,11 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Helpers {
+    static String startPath = "/home/jg/Documents/Code/small_jfl/AdventOfCode2022/";
     public static ArrayList<String> imp(String file) {
         BufferedReader br;
         ArrayList<String> ilist = new ArrayList<String>();
         try {
-            br = new BufferedReader(new FileReader(file));
+            br = new BufferedReader(new FileReader(startPath + file));
             String l = br.readLine();
             while (l != null) {
                 ilist.add(l);

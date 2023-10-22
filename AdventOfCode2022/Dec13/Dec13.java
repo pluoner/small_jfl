@@ -8,7 +8,7 @@ import java.util.Stack;
 public class Dec13 {
 
     public static void main(String[] args) throws CloneNotSupportedException {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec13/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec13/res/input.txt");
 /*      part 1:
         ArrayList<ListNode[]> listPairs = new ArrayList<ListNode[]>();
         ListNode[] listPair;

@@ -9,7 +9,7 @@ import java.util.HashSet;
 public class Dec15 {
 
     public static void main(String[] args) throws CloneNotSupportedException {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec15/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec15/res/input.txt");
 
         SensorZone sz = new SensorZone();
         sz.parseInput(input);

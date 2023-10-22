@@ -14,7 +14,7 @@ public class Dec3 {
         int totcont = 0;
         try {
             br = new BufferedReader(
-                new FileReader("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec3/lib/input.txt")
+                new FileReader("/home/jg/Documents/Code/small_jfl/AdventOfCode2022/Dec3/lib/input.txt")
             );
             String l = br.readLine();
             while (l != null) {

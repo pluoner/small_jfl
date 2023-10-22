@@ -8,7 +8,7 @@ import java.util.Collections;
 public class Dec11 {
     
     public static void main(String[] args) {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec11/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec11/res/input.txt");
 
         parseMonkeys(input);
         for (int i = 0; i < 10000; i++) {

@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class Dec12 {
     
     public static void main(String[] args) {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec12/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec12/res/input.txt");
         Hill elfHill = new Hill(input);
 //        elfHill.climbHill();
 //        System.out.println("minSteps: " + Hill.minSteps);

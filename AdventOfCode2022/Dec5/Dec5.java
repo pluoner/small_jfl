@@ -8,7 +8,7 @@ import AdventOfCode2022.Common.Helpers;
 public class Dec5 {
 
     public static void main(String[] args) {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec5/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec5/res/input.txt");
 
         CratePiles cp = new CratePiles(input);
         CratePiles cp2 = new CratePiles(input, true);

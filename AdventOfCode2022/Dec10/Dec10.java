@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Dec10 {
     
     public static void main(String[] args) {
-        ArrayList<String> input = Helpers.imp("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec10/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec10/res/input.txt");
         ArrayList<Instruction> inst = new ArrayList<Instruction>();
         ArrayList<Instruction> inst2 = new ArrayList<Instruction>();
         for (String ir : input) {

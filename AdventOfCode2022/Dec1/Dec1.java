@@ -19,7 +19,7 @@ public class Dec1 {
 
         try {
             br = new BufferedReader(
-                new FileReader("/home/jonathan/Documents/Code/small_jfl/AdventOfCode2022/Dec1/lib/input.txt")
+                new FileReader("/home/jg/Documents/Code/small_jfl/AdventOfCode2022/Dec1/lib/input.txt")
             );
             String l = br.readLine();
             while (l != null) {
