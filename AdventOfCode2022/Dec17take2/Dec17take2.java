@@ -3,6 +3,8 @@ package AdventOfCode2022.Dec17take2;
 import AdventOfCode2022.Common.Helpers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Dec17take2 {
 
@@ -11,28 +13,25 @@ public class Dec17take2 {
 
         // Cave crumblingCave = new Cave(input.get(0));
         // crumblingCave.simulateXRocksFalling(2022);
-        // System.out.println("Part 1, Height after X stones: " + crumblingCave.getCurrentHeight());
+        // System.out.println("Part 1, Height after X stones: " + crumblingCave.curHeight);
         // System.out.println("");
         Cave crumblingCave2 = new Cave(input.get(0));
         crumblingCave2.simulateManyRocksFalling(1000000000000L);
-        System.out.println("Part 2, Height after Y stones: " + crumblingCave2.getCurrentHeight());
     }
 }
  
 class Cave {
-    final static int RWALL = 7;
-    Integer rocksLanded;
+    Long rocksLanded, curHeight;
     ArrayList<Integer> rockFormation;
     String jetStreams;
     ArrayList<BlockType> blockTypes;
     Integer jetIdx, blockIdx, curFallingBlockStartRow;
     Block curFallingBlock;
-
-    ArrayList<Integer> rowFormations = new ArrayList<>();
+    HashMap<stateKey,stateValues> savedStates;
 
     Cave(String jetStreams) {
         this.jetStreams = jetStreams;
-        this.rocksLanded = 0;
+        this.rocksLanded = 0L;
         this.rockFormation = new ArrayList<>();
         this.rockFormation.add(0, 0b1111111); //absolut cave floor
         this.blockTypes = new ArrayList<>();
@@ -45,26 +44,39 @@ class Cave {
         blockTypes.add(BlockType.SQUARE);
     }
 
-    public void simulateManyRocksFalling(long i) {
-        while (true) {
-            simulateXRocksFalling(10000);
-            System.out.println(getCurrentHeight());
+    public void simulateManyRocksFalling(long noRocks) {
+        savedStates = new HashMap<>();
+        Boolean patternFound = false;
+        stateKey tsk = null;
+        stateValues tsv = null;
+        while (!patternFound) {
+            spawnNextBlock();
+            moveUntilLanded();
+            if (curHeight < 10) {
+                continue;
+            }
+            ArrayList<Integer> l10 = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                l10.add(rockFormation.get(curHeight.intValue() - 9 + i));
+            }
+            stateKey sk = new stateKey(jetIdx % jetStreams.length(), blockIdx % blockTypes.size(), l10);
+            stateValues sv = new stateValues(rocksLanded, curHeight);
+            patternFound = savedStates.containsKey(sk);
+            if (!patternFound) {
+                savedStates.put(sk,sv);
+            }
+            tsk = sk;
+            tsv = sv;
         }
-
-        // spawnRocksUntilPatternFound();
+        System.out.println("tsk: " + tsk);
+        System.out.println("tsv: " + tsv);
+        System.out.println("mapv: " + savedStates.get(tsk));
     }
 
-    Integer getCurrentHeight() {
-        return rockFormation.size() - 1;
-    }
     Integer simulateXRocksFalling(Integer noRocks) {
         for (int i = 0; i < noRocks; i++) {
             spawnNextBlock();
             moveUntilLanded();
-            // System.out.println("");
-            // for (int j = rockFormation.size() -1 ; j >= 0 ; j--) {
-            //     System.out.println(String.format("%7s", Integer.toBinaryString(rockFormation.get(j))).replace(' ', '0'));
-            // }
         }
         return rockFormation.size();
     }
@@ -91,14 +103,12 @@ class Cave {
                 caveRow = rockFormation.get(curFallingBlockStartRow + i);
                 caveRow = caveRow | blockRow;
                 rockFormation.set(curFallingBlockStartRow + i, caveRow);
-                if (rockFormation.size() - 1 == curFallingBlockStartRow + i && i == curFallingBlock.blockSpace.size() && caveRow == 0b1111111) {
-                    System.out.println("jooooo");
-                }
             } else {
                 caveRow = blockRow;
                 rockFormation.add(caveRow);
             }
         }
+        curHeight = Long.valueOf(rockFormation.size() - 1);
         rocksLanded++;
         return false;
     }
@@ -224,6 +234,11 @@ class Block {
         }
     }
 }
+
+record stateKey(Integer jetIdx, Integer blockIdx, ArrayList<Integer> last10) {
+}
+
+record stateValues(Long rocksLanded, Long curHeight) {}
 
 enum BlockType {
     VLINE,
