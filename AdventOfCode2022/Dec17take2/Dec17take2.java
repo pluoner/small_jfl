@@ -9,7 +9,7 @@ import java.util.List;
 public class Dec17take2 {
 
     public static void main(String[] args) throws CloneNotSupportedException {
-        ArrayList<String> input = Helpers.imp("Dec17/res/inptest.txt");
+        ArrayList<String> input = Helpers.imp("Dec17/res/input.txt");
 
         // Cave crumblingCave = new Cave(input.get(0));
         // crumblingCave.simulateXRocksFalling(2022);
@@ -68,9 +68,18 @@ class Cave {
             tsk = sk;
             tsv = sv;
         }
-        System.out.println("tsk: " + tsk);
-        System.out.println("tsv: " + tsv);
-        System.out.println("mapv: " + savedStates.get(tsk));
+        Long drock = tsv.rocksLanded() - savedStates.get(tsk).rocksLanded();
+        Long dheight = tsv.curHeight() - savedStates.get(tsk).curHeight();
+        Long mult = (noRocks - curHeight) / drock;
+        Long calcRocks = drock * mult;
+        Long calcHeight = dheight * mult;
+        Long remStones = noRocks - rocksLanded - calcRocks;
+        for (Long j = 0L; j < remStones ; j++) {
+            spawnNextBlock();
+            moveUntilLanded();
+        }
+        System.out.println("Total no stones: " + (calcRocks + rocksLanded));
+        System.out.println("Total height: " + (calcHeight + curHeight));
     }
 
     Integer simulateXRocksFalling(Integer noRocks) {
