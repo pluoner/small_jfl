@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-// Works but kinda crappy, needs extended memory to avoid stackoverflow. Run with:
+// Works but kinda crappy solution (for part 2), needs extended memory to avoid stackoverflow. Run with:
 //javac TT.java
 //java -Xss4m TT
 public class Dec18 {
