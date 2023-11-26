@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+// Works but kinda crappy, needs extended memory to avoid stackoverflow. Run with:
+//javac TT.java
+//java -Xss4m TT
 public class Dec18 {
 
     public static void main(String[] args) throws CloneNotSupportedException {
-        ArrayList<String> input = Helpers.imp("Dec18/res/inptestcopy.txt");
+        ArrayList<String> input = Helpers.imp("Dec18/res/input.txt");
         Grid3D grid3d = new Grid3D();
         grid3d.parseStrArr(input);
-        System.out.println("No. exposed sides: " + grid3d.exposedSides);;
+        System.out.println("No. exposed sides: " + grid3d.exposedSides);
         grid3d.findAdjustedExp();
-        System.out.println("No. exposed sides to the outer space: " + grid3d.adjustedExposed);;        
+        System.out.println("No. exposed sides to the outer space: " + grid3d.adjustedExposed);
     }
 }
  
@@ -31,7 +34,8 @@ class Grid3D {
 
     void findAdjustedExp() {
         adjustedExposed = exposedSides;
-        buildOuterEmpty();
+        visited = new HashSet<>();
+        buildOuterEmpty(xmin-1, ymin-1, zmin-1);
         for (int x = xmin; x <= xmax; x++) {
             for (int y = ymin; y <= ymax; y++) {
                 for (int z = zmin; z <= zmax; z++) {
@@ -47,25 +51,11 @@ class Grid3D {
         }
     }
 
-    void buildOuterEmpty() {
-        Integer[] startpos;
-        for (int x = xmin; x <= xmax; x++) {
-            for (int y = ymin; y <= ymax; y++) {
-                for (int z = zmin; z <= zmax; z++) {
-                    if (!inMapAt(map, x, y, z) && !inMapAt(outerEmpty, x, y, z)) {
-                        if ((x == xmin || x == xmax) || (y == ymin || y == ymax) || (z == zmin || z == zmax)) {
-                            visited = new HashSet<>();
-                            startpos = new Integer[] {x, y, z};
-                            buildOuterEmpty(startpos[0], startpos[1], startpos[2]);
-                        }
-                    }
-                }
-            }            
-        }
-    }
-
     private void buildOuterEmpty(Integer x, Integer y, Integer z) {
-        if (x > xmax || y > ymax || z > zmax) {
+        if (x > xmax+1 || y > ymax+1 || z > zmax+1) {
+            return;
+        }
+        if (x < xmin-1 || y < ymin-1 || z < zmin-1) {
             return;
         }
         String v = Integer.toString(x) + ";" + Integer.toString(y) + ";" + Integer.toString(z);
@@ -78,8 +68,11 @@ class Grid3D {
         }
         insert(outerEmpty, x, y, z);
         buildOuterEmpty(x+1,y,z);
+        buildOuterEmpty(x-1,y,z);
         buildOuterEmpty(x,y+1,z);
+        buildOuterEmpty(x,y-1,z);
         buildOuterEmpty(x,y,z+1);
+        buildOuterEmpty(x,y,z-1);
     }
 
     void parseAndInsert(String s) {
