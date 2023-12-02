@@ -1,23 +1,22 @@
-package AdventOfCode2022.Dec19;
+package AdventOfCode2022.Dec19take2;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Timer;
 
 import AdventOfCode2022.Common.Helpers;
 
-public class Dec19 {
+public class Dec19take2 {
     public static void main(String[] args) {
-        ArrayList<String> input = Helpers.imp("Dec19/res/input.txt");
+        ArrayList<String> input = Helpers.imp("Dec19take2/res/input.txt");
         RobotFactory rf = new RobotFactory(input);
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
-        // rf.calcMaxGeodes(false);
-        // for (Blueprint b : rf.blueprints) {
-        //     System.out.println("Blueprint: " + b.id + " can produces " + b.maxNoGeodes + " in 24 minutes. Quality level: " + b.getQualityLevel());
-        // }
-        // System.out.println("Summed quality level: " + rf.qualityLevelSum());
+        rf.calcMaxGeodes(false);
+        for (Blueprint b : rf.blueprints) {
+            System.out.println("Blueprint: " + b.id + " can produces " + b.maxNoGeodes + " in 24 minutes. Quality level: " + b.getQualityLevel());
+        }
+        System.out.println("Summed quality level: " + rf.qualityLevelSum());
         rf.calcMaxGeodes(true);
         elapsedTime = (new Date()).getTime() - startTime;
         for (int i = 0; i < 3; i++) {
@@ -58,33 +57,31 @@ class RobotFactory {
     }
 }
 class Blueprint {
-    HashMap<String,Integer> checkedStates;
     int id, maxNoGeodes;
-    int[] oreRobotCost, clayRobotCost, obsidianRobotCost, geodeRobotCost;
+    int[][] robotCosts = new int[4][3];
     Blueprint(String s) {
         String[] sa = s.split(":");
         id = Integer.parseInt(sa[0].replaceAll("Blueprint ", ""));
         String[] rc = sa[1].split("\\.");
-        oreRobotCost = parseRobotCost(rc[0]);
-        clayRobotCost = parseRobotCost(rc[1]);
-        obsidianRobotCost = parseRobotCost(rc[2]);
-        geodeRobotCost = parseRobotCost(rc[3]);
+        robotCosts[0] = parseRobotCost(rc[0]);
+        robotCosts[1] = parseRobotCost(rc[1]);
+        robotCosts[2] = parseRobotCost(rc[2]);
+        robotCosts[3] = parseRobotCost(rc[3]);
     }
 
     int maxSpend(int resource) {
         int ms = 0;
-        ms += oreRobotCost[resource];
-        ms += clayRobotCost[resource];
-        ms += obsidianRobotCost[resource];
-        ms += geodeRobotCost[resource];
+        ms += robotCosts[0][resource];
+        ms += robotCosts[1][resource];
+        ms += robotCosts[2][resource];
+        ms += robotCosts[3][resource];
         return ms;
     }
 
     void calcMaxGeodes(int time) {
-        checkedStates = new HashMap<>();
         int[] workers = new int[] {1,0,0,0};
-        boolean[] posObjectives = posibleObjectives(workers);
-        for (int i = 0; i < 4; i++) {
+        boolean[] posObjectives = possibleObjectives(workers);
+        for (int i = 3; i >= 0; i--) {
             if (posObjectives[i]) {
                 calcMaxGeodes(time, new int[] {1,0,0,0}, new int[] {0,0,0,0}, i);
             }
@@ -92,21 +89,6 @@ class Blueprint {
     }
 
     private void calcMaxGeodes(int time, int[] workers, int[] resources, int objective) {
-        String k = "";
-        for (int i = 0; i < 4; i++) {
-            k = k + workers[i] + ";" + resources[i] + ";";
-        }
-        Integer t = checkedStates.get(k);
-        if (t != null && t < time) {
-            return;
-        } else {
-            checkedStates.put(k, time);
-        }
-        for (int i = 0; i < 3; i++) {
-            if (resources[i] >= 35) { // arbitrary exit if to many resources has been collected.
-                return;
-            }
-        }
         int inProduction = -1;
         if (objCritOk(objective, resources)) {
             resources = payRobotCost(objective, resources);
@@ -117,6 +99,9 @@ class Blueprint {
         for (int i = 0; i < workers.length; i++) {
             resources[i]+= workers[i];
         }
+        if (time != 0 && maxNoGeodes >= theoreticalMaxNoGeodes(time, workers, resources)) {
+            return;
+        }
         if (time == 0) {
             if (resources[3] > maxNoGeodes) {
                 maxNoGeodes = resources[3];
@@ -125,8 +110,8 @@ class Blueprint {
             calcMaxGeodes(time, workers, resources, objective);
         } else {
             workers[inProduction]++;
-            boolean[] posObjectives = posibleObjectives(workers);
-            for (int i = 0; i < 4; i++) {
+            boolean[] posObjectives = possibleObjectives(workers);
+            for (int i = 3; i >= 0; i--) {
                 if (posObjectives[i]) {
                     int[] w = workers.clone();
                     int[] r = resources.clone();
@@ -136,64 +121,41 @@ class Blueprint {
         }
     }
 
+    private int theoreticalMaxNoGeodes(int time, int[] workers, int[] resources) {
+        int c = resources[3];
+        c += workers[3] * time;
+        for (int i = time; i > 0; i--) {
+            c += i;
+        }
+        return c;
+    }
+
     private int[] payRobotCost(int objective, int[] resources) {
-        for (int i = 0; i < 4; i++) {
-            if (objective == 0) {
-                resources[i] -= oreRobotCost[i];
-            }
-            if (objective == 1) {
-                resources[i] -= clayRobotCost[i];
-            }
-            if (objective == 2) {
-                resources[i] -= obsidianRobotCost[i];
-            }
-            if (objective == 3) {
-                resources[i] -= geodeRobotCost[i];
-            }
+        for (int i = 0; i < 3; i++) {
+            resources[i] -= robotCosts[objective][i];
         }
         return resources;
     }
 
     private boolean objCritOk(int objective, int[] resources) {
-        for (int i = 0; i < 4; i++) {
-            if (objective == 0) {
-                if (oreRobotCost[i] > resources[i]) {
-                    return false;
-                }
-            }
-            if (objective == 1) {
-                if (clayRobotCost[i] > resources[i]) {
-                    return false;
-                }
-            }
-            if (objective == 2) {
-                if (obsidianRobotCost[i] > resources[i]) {
-                    return false;
-                }
-            }
-            if (objective == 3) {
-                if (geodeRobotCost[i] > resources[i]) {
-                    return false;
-                }
+        for (int i = 0; i < 3; i++) {
+            if (robotCosts[objective][i] > resources[i]) {
+                return false;
             }
         }
         return true;
     }
 
-    private boolean[] posibleObjectives(int[] workers) {
+    private boolean[] possibleObjectives(int[] workers) {
         boolean[] objectives = new boolean[] {true,true,true,true};
-        for (int i = 0; i < 4; i++) {
-            if (oreRobotCost[i] > 0 && workers[i] < 1 || maxSpend(0) <= workers[0]) {
-                objectives[0] = false;
-            }
-            if (clayRobotCost[i] > 0 && workers[i] < 1 || maxSpend(1) <= workers[0]) {
-                objectives[1] = false;
-            }
-            if (obsidianRobotCost[i] > 0 && workers[i] < 1 || maxSpend(2) <= workers[2]) {
-                objectives[2] = false;
-            }
-            if (geodeRobotCost[i] > 0 && workers[i] < 1) {
-                objectives[3] = false;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (robotCosts[j][i] > 0 && workers[i] < 1) {
+                    objectives[j] = false;
+                }
+                if (j < 3 && maxSpend(0) <= workers[j]) {
+                    objectives[j] = false;
+                }
             }
         }
         return objectives;
@@ -204,7 +166,7 @@ class Blueprint {
     }
 
     private int[] parseRobotCost(String costRow) {
-        int[] ia = new int[4]; //can never cost geodes but adding a slot for that anyway.
+        int[] ia = new int[3];
         int st = -1;
         for (int i = 0; i < costRow.length(); i++) {
             if (Character.isDigit(costRow.charAt(i))) {
