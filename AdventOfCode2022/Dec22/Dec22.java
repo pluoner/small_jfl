@@ -14,6 +14,7 @@ public class Dec22 {
         System.out.println("row: " + myPos.row);
         System.out.println("col: " + myPos.col);
         System.out.println("facing: " + myPos.facing);
+        System.out.println("Position value: " + myPos.getPosValue());
         //pt 2
 
     }
@@ -101,8 +102,14 @@ class Map {
                 col = map.get(row).size() - 1;
             }
             if (row == initrow && col == initcol) {
+                curRow = initrow;
+                curCol = initcol;
                 nextFound = true;
             } else if (getTerrainAt(row, col).equals("#")) {
+                nextFound = true;
+            } else if (getTerrainAt(row, col).equals(".")) {
+                curRow = row;
+                curCol = col;
                 nextFound = true;
             }
         }
@@ -119,6 +126,16 @@ class Position {
         this.col = col;
         this.map = map;
         this.facing = facing;
+    }
+    Integer getPosValue() {
+        Integer sum = 0;
+        sum += 1000 * (row + 1);
+        sum += 4 * (col + 1);
+        if (facing.equals("R")) {sum += 0;}
+        if (facing.equals("D")) {sum += 1;}
+        if (facing.equals("L")) {sum += 2;}
+        if (facing.equals("U")) {sum += 3;}
+        return sum;
     }
     void followMapInstructions() {
         for (String inst : map.instructions) {
