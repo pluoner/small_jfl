@@ -6,7 +6,7 @@ import AdventOfCode2022.Common.Helpers;
 
 public class Dec22 {
     public static void main(String[] args) {
-        ArrayList<String> input = Helpers.imp("Dec22/res/inptest.txt");
+        ArrayList<String> input = Helpers.imp("Dec22/res/inptest2.txt");
         //pt 1
         Map myMap = new Map(input);
         Position myPos = new Position(myMap, 0, 0, "R");
@@ -22,6 +22,7 @@ public class Dec22 {
 class Map {
     ArrayList<ArrayList<String>> map;
     ArrayList<String> instructions;
+    Integer maxWidth = 0;
     Map(ArrayList<String> input) {
         map = new ArrayList<>();
         boolean mapdone = false;
@@ -44,6 +45,9 @@ class Map {
         return map.get(row).get(col);
     }
     private ArrayList<String> parseMapRow(String is) {
+        if (is.length() > maxWidth) {
+            maxWidth = is.length();
+        }
         ArrayList<String> res = new ArrayList<>();
         for (int i = 0; i < is.length(); i++) {
             res.add(is.substring(i, i+1).trim());
