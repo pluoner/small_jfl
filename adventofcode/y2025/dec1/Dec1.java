@@ -9,6 +9,33 @@ public class Dec1 {
     private static final Logger LOGGER = Logger.getLogger(Dec1.class.getName());
     public static void main(String[] args) {
         List<String> input = Helpers.imp("y2025/dec1/res/input.txt");
-        LOGGER.log(Level.INFO, "Input lines: {0}", input.size());
+        int currentDial = 50;
+        int atzeroCounter = 0;
+        int passedZeroCounter = 0;
+        for (String line : input) {
+            int oldCurrentDial = currentDial; //same but for right moves... needs to be adressed somehow
+            char direction = line.charAt(0);
+            int i = Integer.parseInt(line.substring(1));
+            passedZeroCounter += i / 100;
+            if (direction == 'L') {
+                currentDial -= i % 100;
+            } else if (direction == 'R') {
+                currentDial += i % 100;
+            }
+            if (currentDial < 0 && oldCurrentDial != 0) {
+                passedZeroCounter++;
+                currentDial += 100;
+            } else if (currentDial >= 100) {
+                if (currentDial > 100) {
+                    passedZeroCounter++;
+                }
+                currentDial -= 100;
+            }
+            if (currentDial == 0) {
+                atzeroCounter++;
+            }
+        }
+        LOGGER.log(Level.INFO, "On zero: {0,number,#}", atzeroCounter);
+        LOGGER.log(Level.INFO, "Passed zero: {0,number,#}", passedZeroCounter + atzeroCounter); //6483 to high
     }
 }
