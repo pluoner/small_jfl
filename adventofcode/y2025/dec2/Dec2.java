@@ -1,5 +1,6 @@
 package adventofcode.y2025.dec2;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,35 +10,34 @@ public class Dec2 {
     private static final Logger LOGGER = Logger.getLogger(Dec2.class.getName());
     public static void main(String[] args) {
         List<String> input = Helpers.imp("y2025/dec2/res/input.txt");
-        int currentDial = 50;
-        int atzeroCounter = 0;
-        int passedZeroCounter = 0;
+        List<Long[]> intervals = new ArrayList<>();
         for (String line : input) {
-            int oldCurrentDial = currentDial;
-            char direction = line.charAt(0);
-            int i = Integer.parseInt(line.substring(1));
-            passedZeroCounter += i / 100;
-            if (direction == 'L') {
-                currentDial -= i % 100;
-            } else if (direction == 'R') {
-                currentDial += i % 100;
-            }
-            if (currentDial < 0) {
-                if (oldCurrentDial != 0) {
-                    passedZeroCounter++;
-                }
-                currentDial += 100;
-            } else if (currentDial >= 100) {
-                if (currentDial > 100 && oldCurrentDial != 0) {
-                    passedZeroCounter++;
-                }
-                currentDial -= 100;
-            }
-            if (currentDial == 0) {
-                atzeroCounter++;
+            String[] ints = line.split(",");
+            for (String intervalStr : ints) {
+                String[] parts = intervalStr.split("-");
+                Long[] interval = new Long[2];
+                interval[0] = Long.parseLong(parts[0]);
+                interval[1] = Long.parseLong(parts[1]);
+                intervals.add(interval);
             }
         }
-        LOGGER.log(Level.INFO, "On zero: {0,number,#}", atzeroCounter);
-        LOGGER.log(Level.INFO, "Passed zero: {0,number,#}", passedZeroCounter + atzeroCounter);
+        Integer totSilly = 0;
+        for (Long[] interval : intervals) {
+            Long nSilly = nextSilly(interval[0]);
+            while (true) {
+                if (nSilly > interval[1]) {
+                    break;
+                }
+                totSilly++;
+                nSilly = nextSilly(nSilly);
+            }
+            LOGGER.log(Level.INFO, "Interval: {0,number,#}-{1,number,#}", new Object[]{interval[0], interval[1]});
+        }
+        // LOGGER.log(Level.INFO, "On zero: {0,number,#}", atzeroCounter);
+        // LOGGER.log(Level.INFO, "Passed zero: {0,number,#}", passedZeroCounter + atzeroCounter);
+    }
+    private static Long nextSilly(Long n) {
+        
+        return null;
     }
 }
